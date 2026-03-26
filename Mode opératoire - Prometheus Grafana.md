@@ -11,16 +11,16 @@ Cluster Cassandra déployé via Docker Compose avec 4 nœuds sur 2 racks différ
 
 ```bash
 cd ~
-sudo rm -Rf ~/cassandra-monitoring
-```
-
-```bash
-cd ~
 # A ne pas faire en production évidemment : 
 sudo systemctl stop apparmor
 sudo systemctl stop ufw
 sudo systemctl disable apparmor
 sudo systemctl disable ufw
+```
+
+```bash
+cd ~
+sudo rm -Rf ~/cassandra-monitoring
 ```
 
 #### Ici, on va simplement cloner le projet :
