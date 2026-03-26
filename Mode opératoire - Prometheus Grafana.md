@@ -156,7 +156,7 @@ cd /opt/cassandra/tools/bin
 
 ##### bash cassandra-stress write n=1000 -node 10.17.64.5
 ```bash
-bash cassandra-stress write no-warmup n=25000 cl=one -rate threads=1 -node 10.17.64.5
+bash cassandra-stress write no-warmup n=25000 cl=one -rate threads=3 -node 10.17.64.5
 ```
 
 ##### Assurez-vous que le second terminal vous reste visible pendant l'exécution de cassandra-stress.
