@@ -14,6 +14,15 @@ cd ~
 sudo rm -Rf ~/cassandra-monitoring
 ```
 
+```bash
+cd ~
+# A ne pas faire en production évidemment : 
+sudo systemctl stop apparmor
+sudo systemctl stop ufw
+sudo systemctl disable apparmor
+sudo systemctl disable ufw
+```
+
 #### Ici, on va simplement cloner le projet :
 ```bash
 git clone https://github.com/crystalloide/cassandra-monitoring
