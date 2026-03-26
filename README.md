@@ -1,1 +1,5 @@
-![Description](https://github.com/crystalloide/cassandra-monitoring/blob/main/Ecran%201%20-%20Cluster%20operations%20-%20Lectures-Ecritures.png)
+![Description](https://github.com/crystalloide/Ecran_1_Cluster_operations_-_Lectures_-_Ecritures.png)
+![Description](https://github.com/crystalloide/Ecran_2_-_Latences_-_Timeouts_et_indisponibilites.png)
+![Description](https://github.com/crystalloide/Ecran_3_-_Erreurs_-_Thread_pools.png)
+![Description](https://github.com/crystalloide/Ecran_4_-_Compactions_-_SSTables_-_Caches.png)
+![Description](https://github.com/crystalloide/Ecran_5_-_Storage_-_Health.png)
