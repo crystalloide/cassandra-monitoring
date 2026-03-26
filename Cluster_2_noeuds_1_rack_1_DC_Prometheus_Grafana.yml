@@ -9,7 +9,8 @@ networks:
 # ─────────────────────────────────────────────────────────────
 services:
   cassandra01:
-    image: docker.io/library/cassandra:latest
+    #image: docker.io/library/cassandra:latest
+    image: cassandra:4.1.11
     hostname: cassandra01
     container_name: cassandra01
     mem_limit: 1g
@@ -56,7 +57,8 @@ services:
     depends_on:
       cassandra01:
         condition: service_healthy
-    image: docker.io/library/cassandra:latest
+    #image: docker.io/library/cassandra:latest
+    image: cassandra:4.1.11
     hostname: cassandra02
     container_name: cassandra02
     mem_limit: 1g
