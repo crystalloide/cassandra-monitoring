@@ -325,6 +325,38 @@ Total operation time      : 00:00:51
 END
 ```
 
+##### Autre essai : 
+```bash
+bash cassandra-stress write no-warmup n=25000 cl=QUORUM -rate threads=5 -node 10.17.64.6
+```
+
+
+###### Affichage en retour du 2nd benchmark : 
+```text
+
+Results:
+Op rate                   :      845 op/s  [WRITE: 845 op/s]
+Partition rate            :      845 pk/s  [WRITE: 845 pk/s]
+Row rate                  :      845 row/s [WRITE: 845 row/s]
+Latency mean              :    5.9 ms [WRITE: 5.9 ms]
+Latency median            :    0.5 ms [WRITE: 0.5 ms]
+Latency 95th percentile   :   84.2 ms [WRITE: 84.2 ms]
+Latency 99th percentile   :   92.7 ms [WRITE: 92.7 ms]
+Latency 99.9th percentile :   99.9 ms [WRITE: 99.9 ms]
+Latency max               :  192.4 ms [WRITE: 192.4 ms]
+Total partitions          :     25,000 [WRITE: 25,000]
+Total errors              :          0 [WRITE: 0]
+Total GC count            : 12
+Total GC memory           : 463.992 MiB
+Total GC time             :    0.1 seconds
+Avg GC time               :   11.0 ms
+StdDev GC time            :   23.3 ms
+Total operation time      : 00:00:29
+
+END
+```
+
+
 ##### Observer les métriques ici : 
 ```text
 http://localhost:3000/d/PbhrxMuiz/cassandra-dashboard?orgId=1&from=now-5m&to=now&timezone=browser&var-cluster=formation&var-datacenter=$__all&refresh=5s
