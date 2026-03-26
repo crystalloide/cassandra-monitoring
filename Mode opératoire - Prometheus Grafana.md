@@ -1,6 +1,6 @@
 ## Mode opératoire - Prometheus Grafana
 
-Cassandra 5.0 avec Docker Compose (Cluster 4 nœuds)
+Cassandra 4.1.11 avec Docker Compose (Cluster 2 nœuds)
 
 Cluster Cassandra déployé via Docker Compose avec 4 nœuds sur 2 racks différents dans 2 datacenters.
 
@@ -22,16 +22,16 @@ cd ~/cassandra-monitoring
 ```
 #### Vérifier le contenu ou créer le fichier docker compose de notre cluster 4 noeuds cassandra :
 ```bash
-cat Cluster_4_noeuds_2_racks_2_DC_Prometheus_Grafana.yml
+cat Cluster_2_noeuds_1_rack_1_DC_Prometheus_Grafana.yml
 ```
 
 #### 2°) Créer les répertoires de volumes :
 ```bash
 sudo rm -Rf ~/cassandra-monitoring/docker/cassandra*
-mkdir -p ~/cassandra-monitoring/docker/cassandra01 ~/cassandra-monitoring/docker/cassandra02 ~/cassandra-monitoring/docker/cassandra03 ~/cassandra-monitoring/docker/cassandra04
+mkdir -p ~/cassandra-monitoring/docker/cassandra01 ~/cassandra-monitoring/docker/cassandra02 
 ```
 ```bash
-mkdir -p ~/cassandra-monitoring/docker/cassandra01-conf ~/cassandra-monitoring/docker/cassandra02-conf ~/cassandra-monitoring/docker/cassandra03-conf ~/cassandra-monitoring/docker/cassandra04-conf
+mkdir -p ~/cassandra-monitoring/docker/cassandra01-conf ~/cassandra-monitoring/docker/cassandra02-conf
 ```
 #### On affiche les répertoires créés :
 ```bash
@@ -39,20 +39,20 @@ ls ~/cassandra-monitoring/docker
 ```
 ##### Affichage : 
 ```bash
-     cassandra01       cassandra02       cassandra03       cassandra04
-     assandra01-conf  cassandra02-conf  cassandra03-conf  cassandra04-conf
+     cassandra01       cassandra02       
+     cassandra01-conf  cassandra02-conf 
 ```
 
 #### 3°) Démarrage du cluster avec Docker Compose
 
 ```bash
 # Démarrer le cluster en arrière-plan
-docker compose -f Cluster_4_noeuds_2_racks_2_DC_Prometheus_Grafana.yml up  -d
+docker compose -f Cluster_2_noeuds_1_rack_1_DC_Prometheus_Grafana.yml up  -d
 ```
 #### Suivre les logs pour vérifier le démarrage (dans un autre terminal si besoin)
 ```bash
 cd ~/cassandra-monitoring
-docker compose -f Cluster_4_noeuds_2_racks_2_DC_Prometheus_Grafana.yml logs
+docker compose -f Cluster_2_noeuds_1_rack_1_DC_Prometheus_Grafana.yml logs
 ```
 
 #### Dans un autre terminal, pour suivre  :
@@ -64,18 +64,14 @@ docker ps -a
 ```bash
 # 
 # CONTAINER ID   IMAGE              COMMAND                  CREATED              STATUS                             PORTS                                                                                                                                                       NAMES
-# 439bcb49160a   cassandra:latest   "docker-entrypoint.s…"   About a minute ago   Created                                                                                                                                                                                        cassandra04
-# 7dd3d0d2bf79   cassandra:latest   "docker-entrypoint.s…"   About a minute ago   Created                                                                                                                                                                                        cassandra03
 # cefc35985646   cassandra:latest   "docker-entrypoint.s…"   About a minute ago   Up 14 seconds (health: starting)   7001/tcp, 9160/tcp, 0.0.0.0:7200->7000/tcp, [::]:7200->7000/tcp, 0.0.0.0:7299->7199/tcp, [::]:7299->7199/tcp, 0.0.0.0:9242->9042/tcp, [::]:9242->9042/tcp   cassandra02
 # 1e6d94687116   cassandra:latest   "docker-entrypoint.s…"   About a minute ago   Up About a minute (healthy)        7001/tcp, 9160/tcp, 0.0.0.0:7199->7199/tcp, [::]:7199->7199/tcp, 0.0.0.0:7100->7000/tcp, [::]:7100->7000/tcp, 0.0.0.0:9142->9042/tcp, [::]:9142->9042/tcp   cassandra01
 ```
 
-**Note** : Le démarrage complet peut prendre 5-10 minutes car les nœuds démarrent séquentiellement avec healthchecks. L'ordre de démarrage est :
+**Note** : Le démarrage complet peut prendre 5 minutes car les nœuds démarrent séquentiellement avec healthchecks. L'ordre de démarrage est :
 
 1. cassandra01 (1er seed, peut démarrer en 1er)
-2. cassandra02 (attend cassandra01 healthy)
-3. cassandra03 (2ème seed, attend cassandra02 healthy)
-4. cassandra04 (attend cassandra03 healthy)
+2. cassandra03 (2ème seed, attend cassandra01 healthy)
 
 
 #### Pour visualiser les logs de cassandra01 : 
@@ -93,14 +89,14 @@ netstat -anl | grep 0:
 #### Vérifier que les 4 conteneurs sont UP sinon attendre (non listé ou encore en train de joindre : 'UJ')
 ```bash
 cd ~/cassandra-monitoring
-docker compose -f Cluster_4_noeuds_2_racks_2_DC_Prometheus_Grafana.yml ps
+docker compose -f Cluster_2_noeuds_1_rack_1_DC_Prometheus_Grafana.yml ps
 ```
 
 #### Vérifier le statut du cluster via nodetool
 ```bash
 docker exec -it cassandra01 nodetool status
 ```
-#### Vous devriez voir finalement les 4 nœuds cassandra avec le statut "UN" (Up Normal)
+#### Vous devriez voir finalement les 2 nœuds cassandra avec le statut "UN" (Up Normal)
 #### Le résultat devrait ressembler à :
 
 ```bash
@@ -109,10 +105,9 @@ Datacenter: dc1
 Status=Up/Down
 |/ State=Normal/Leaving/Joining/Moving
 --  Address          Load        Tokens  Owns (effective)  Host ID                               Rack
-UN  192.168.100.154  80.06 KiB   16      52.0%             6747a2fb-3f5a-4342-91b5-1f1d177366af  Rack4
-UN  192.168.100.151  119.82 KiB  16      48.5%             e2efa530-2ac0-4957-8827-60860279295b  Rack1
-UN  192.168.100.152  80.06 KiB   16      48.8%             955ae8dc-40f6-4c7c-a534-4f99af4af5de  Rack2
-UN  192.168.100.153  80.03 KiB   16      50.7%             21b3ae41-1e2a-4c7d-97d7-bcca250c85df  Rack3
+UN  10.17.64.6    80.06 KiB       16      52.0%             6747a2fb-3f5a-4342-91b5-1f1d177366af  rack1
+UN  10.17.64.5    119.82 KiB      16      48.5%             e2efa530-2ac0-4957-8827-60860279295b  rack1
+
 ```
 
 
@@ -150,9 +145,9 @@ docker exec -it cassandra01 bash
 cd /opt/cassandra/tools/bin
 ```
 
-##### bash cassandra-stress write n=1000 -node 192.168.100.151
+##### bash cassandra-stress write n=1000 -node 10.17.64.5
 ```bash
-bash cassandra-stress write no-warmup n=25000 cl=one -rate threads=1 -node 192.168.100.151
+bash cassandra-stress write no-warmup n=25000 cl=one -rate threads=1 -node 10.17.64.5
 ```
 
 ##### Assurez-vous que le second terminal vous reste visible pendant l'exécution de cassandra-stress.
@@ -257,7 +252,7 @@ Reporting:
   Header frequency: *not set*
 
 Connected to cluster: formation, max pending requests per connection 128, max connections per host 8
-Datacenter: datacenter1; Host: /192.168.100.151:9042; Rack: rack1
+Datacenter: datacenter1; Host: /10.17.64.5:9042; Rack: rack1
 Created keyspaces. Sleeping 1s for propagation.
 Sleeping 2s...
 Running WRITE with 1 threads for 25000 iteration
