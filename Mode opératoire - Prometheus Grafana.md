@@ -95,7 +95,7 @@ docker logs cassandra01
 netstat -anl | grep 0:
 ```
 
-#### Vérifier que les 4 conteneurs sont UP sinon attendre (non listé ou encore en train de joindre : 'UJ')
+#### Vérifier que les 2 conteneurs sont UP sinon attendre (non listé ou encore en train de joindre : 'UJ')
 ```bash
 cd ~/cassandra-monitoring
 docker compose -f Cluster_2_noeuds_1_rack_1_DC_Prometheus_Grafana.yml ps
